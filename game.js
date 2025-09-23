@@ -41,9 +41,42 @@ document.addEventListener('keydown', function(event) {
 
 
 // 5. دالة لرسم الطائر
-function drawBird() {
-    ctx.fillStyle = bird.color;
-    ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
+/**
+ * دالة جديدة لرسم شكل يشبه التمرة
+ * @param {CanvasRenderingContext2D} ctx - سياق الرسم الخاص بالكانفاس
+ * @param {object} bird - كائن الطائر الذي يحتوي على الموقع والحجم
+ */
+function drawDate(ctx, bird) {
+    // ======== 1. رسم جسم التمرة (الشكل البيضاوي) ========
+    ctx.beginPath(); // بدء مسار رسم جديد
+    ctx.fillStyle = '#8B4513'; // لون بني شبيه بلون التمر
+
+    // نرسم شكل بيضاوي باستخدام موقع وحجم الطائر
+    ctx.ellipse(
+        bird.x + bird.width / 2,  // المركز الأفقي للشكل
+        bird.y + bird.height / 2, // المركز العمودي للشكل
+        bird.width / 2,           // نصف العرض (لإنشاء شكل بيضاوي)
+        bird.height / 2,          // نصف الارتفاع
+        0,                        // لا يوجد دوران
+        0,                        // زاوية البداية
+        2 * Math.PI               // زاوية النهاية (دائرة كاملة)
+    );
+    ctx.fill(); // نملأ الشكل باللون المحدد
+    ctx.closePath(); // إغلاق مسار الرسم
+
+
+    // ======== 2. رسم قمع التمرة (الجزء العلوي الصغير) ========
+    ctx.beginPath();
+    ctx.fillStyle = '#5C2F05'; // لون بني أغمق للقمع
+
+    // نرسم مستطيل صغير على يسار التمرة ليمثل القمع
+    ctx.fillRect(
+        bird.x,                          // يبدأ من الحافة اليسرى للتمرة
+        bird.y + (bird.height / 2) - 4,  // يتوسط ارتفاع التمرة
+        6,                               // عرض القمع
+        8                                // ارتفاع القمع
+    );
+    ctx.closePath();
 }
 
 // 6. دالة تحديث اللعبة (Game Loop)
@@ -56,7 +89,8 @@ function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // رسم الطائر في موقعه الجديد
-    drawBird();
+    // داخل دالة gameLoop - السطر الجديد
+drawDate(ctx, bird);
 
     // طلب تكرار الدالة مع الإطار التالي للأنميشن
     requestAnimationFrame(gameLoop);
