@@ -9,18 +9,44 @@ const bird = {
     width: 40,
     height: 30,
     color: 'yellow',
-    velocityY: 0, // سرعة السقوط العمودية
-    gravity: 0.4,   // قوة الجاذبية
-    jumpStrength: 8 // قوة القفزة
+    velocityY: 0,       // سرعة السقوط العمودية
+    gravity: 0.4,       // قوة الجاذبية
+    jumpStrength: 8     // قوة القفزة
 };
 
-// 3. دالة لرسم الطائر
+// ==========================================
+// ==========  الأجزاء الجديدة هنا ==========
+// ==========================================
+
+// 3. دالة القفز
+// هذه الدالة تغير سرعة الطائر العمودية إلى قيمة سالبة ليرتفع للأعلى
+function jump() {
+    bird.velocityY = -bird.jumpStrength;
+}
+
+// 4. ربط الأحداث (Events)
+// نستمع للمس الشاشة على الجوال
+document.addEventListener('touchstart', jump);
+
+// نستمع لضغط زر المسافة "Space" على الكمبيوتر (لتسهيل التجربة)
+document.addEventListener('keydown', function(event) {
+    if (event.code === 'Space') {
+        jump();
+    }
+});
+
+
+// ==========================================
+// ==========================================
+
+
+// 5. دالة لرسم الطائر
 function drawBird() {
     ctx.fillStyle = bird.color;
     ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
 }
 
-// 4. دالة تحديث اللعبة (Game Loop)
+// 6. دالة تحديث اللعبة (Game Loop)
 function gameLoop() {
     // تحديث موقع الطائر بناءً على الجاذبية
     bird.velocityY += bird.gravity;
@@ -36,6 +62,5 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-// 5. بدء تشغيل حلقة اللعبة
+// 7. بدء تشغيل حلقة اللعبة
 gameLoop();
-
